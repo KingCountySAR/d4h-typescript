@@ -1,6 +1,6 @@
 import HttpUtils from './httpUtils'
 import type { Group } from './group'
-import type { Member } from './member'
+import type { Member, MemberUpdate } from './member'
 
 const D4H_FETCH_LIMIT = 250
 const D4H_BASE_URL = 'https://api.d4h.org/v2'
@@ -31,7 +31,7 @@ export default class D4H {
     /**************** MEMBERS *******************/
     /********************************************/
     
-    async getMember(id: number, options?: GetMemberOptions): Promise<Member> {
+    getMember(id: number, options?: GetMemberOptions): Promise<Member> {
         const url = new URL(`${D4H_BASE_URL}/team/members/${id}`)
         
         if (options !== undefined) {
@@ -42,10 +42,10 @@ export default class D4H {
             }
         }
 
-        return await this._httpUtils.get<Member>(url)
+        return this._httpUtils.get<Member>(url)
     }
 
-    async getMembers(options?: GetMembersOptions): Promise<Member[]> {
+    getMembers(options?: GetMembersOptions): Promise<Member[]> {
         const url = new URL(`${D4H_BASE_URL}/team/members`)
 
         if (options !== undefined) {
@@ -64,7 +64,12 @@ export default class D4H {
             }
         }
 
-        return await this._httpUtils.getMany(url)
+        return this._httpUtils.getMany(url)
+    }
+
+    updateMember(id: number, updates: MemberUpdate): Promise<Member> {
+        const url = new URL(`${D4H_BASE_URL}/team/members/${id}`)
+        return this._httpUtils.put(url, updates)
     }
 
     /********************************************/

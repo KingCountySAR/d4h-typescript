@@ -9,6 +9,11 @@ interface D4HError {
     statusCode: number
 }
 
+enum HttpMethod {
+    Get = 'GET',
+    Put = 'PUT',
+}
+
 export default class HttpUtils {
     private readonly _fetchLimit: number
     private readonly _token: string
@@ -22,16 +27,25 @@ export default class HttpUtils {
         this._token = token
     }
 
-    async get<DataType>(url: URL): Promise<DataType> {
-        const method = 'GET'
+    async request<TBody, TResponse>(url: URL, method: HttpMethod, body?: TBody): Promise<TResponse> {
         const headers = {
             'Authorization': `Bearer ${this._token}`,
+            'Content-Type': 'application/json'
         }
     
         console.log(url)
+
+        const options: RequestInit = {
+            method,
+            headers,
+        }
+
+        if (body) {
+            options.body = JSON.stringify(body)
+        }
     
-        const rawResponse = await fetch(url.toString(), { method, headers })
-        const response = await rawResponse.json() as D4HResponse<DataType> & D4HError
+        const rawResponse = await fetch(url.toString(), options)
+        const response = await rawResponse.json() as D4HResponse<TResponse> & D4HError
     
         if (response.statusCode !== 200) {
             const d4hError = response as D4HError
@@ -39,6 +53,10 @@ export default class HttpUtils {
         }
     
         return response.data
+    }
+
+    async get<DataType>(url: URL): Promise<DataType> {
+        return this.request<never, DataType>(url, HttpMethod.Get)
     }
     
     async getMany<DataType>(url: URL): Promise<DataType[]> {
@@ -62,5 +80,9 @@ export default class HttpUtils {
         }
         
         return results
+    }
+
+    async put<TBody, TResponse>(url: URL, body: TBody): Promise<TResponse> {
+        return this.request(url, HttpMethod.Put, body)
     }
 }
