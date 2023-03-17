@@ -1,12 +1,12 @@
 interface D4HResponse<DataType> {
     statusCode: number
     data: DataType
-    error: string
 }
 
 interface D4HError {
-    statusCode: number
     error: string
+    message: string
+    statusCode: number
 }
 
 export default class HttpUtils {
@@ -31,10 +31,11 @@ export default class HttpUtils {
         console.log(url)
     
         const rawResponse = await fetch(url.toString(), { method, headers })
-        const response = await rawResponse.json() as D4HResponse<DataType>
+        const response = await rawResponse.json() as D4HResponse<DataType> & D4HError
     
         if (response.statusCode !== 200) {
-            throw response as D4HError
+            const d4hError = response as D4HError
+            throw new Error(`${d4hError.statusCode}: ${d4hError.error}: ${d4hError.message}`)
         }
     
         return response.data
