@@ -19,7 +19,7 @@ let main = async function() {
     // Double-check your API key. Double-check what you're modifying.
     /*try {
         const memberId = 0000 // Set this to a real ID
-        await api.updateMember(memberId, {
+        await api.updateMemberAsync(memberId, {
             notes: null,
         })
     } catch (err) {
@@ -28,7 +28,7 @@ let main = async function() {
     }*/
 
     try {
-        const members = await api.getMembers(getMembersOptions);
+        const members = await api.getMembersAsync(getMembersOptions);
         console.log(`Retrieved ${members.length} members.`);
     } catch (err) {
         console.log(JSON.stringify(err));
@@ -36,7 +36,7 @@ let main = async function() {
     }
 
     try {
-        const groups = await api.getGroups();
+        const groups = await api.getGroupsAsync();
         console.log(`Retrieved ${groups.length} groups.`);
     } catch (err) {
         console.log(JSON.stringify(err));

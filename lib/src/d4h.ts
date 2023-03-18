@@ -31,7 +31,7 @@ export default class D4H {
     /**************** MEMBERS *******************/
     /********************************************/
     
-    getMember(id: number, options?: GetMemberOptions): Promise<Member> {
+    getMemberAsync(id: number, options?: GetMemberOptions): Promise<Member> {
         const url = new URL(`${D4H_BASE_URL}/team/members/${id}`)
         
         if (options !== undefined) {
@@ -42,10 +42,10 @@ export default class D4H {
             }
         }
 
-        return this._httpUtils.get<Member>(url)
+        return this._httpUtils.getAsync<Member>(url)
     }
 
-    getMembers(options?: GetMembersOptions): Promise<Member[]> {
+    getMembersAsync(options?: GetMembersOptions): Promise<Member[]> {
         const url = new URL(`${D4H_BASE_URL}/team/members`)
 
         if (options !== undefined) {
@@ -64,24 +64,24 @@ export default class D4H {
             }
         }
 
-        return this._httpUtils.getMany(url)
+        return this._httpUtils.getManyAsync(url)
     }
 
-    updateMember(id: number, updates: MemberUpdate): Promise<Member> {
+    updateMemberAsync(id: number, updates: MemberUpdate): Promise<Member> {
         const url = new URL(`${D4H_BASE_URL}/team/members/${id}`)
-        return this._httpUtils.put(url, updates)
+        return this._httpUtils.putAsync(url, updates)
     }
 
     /********************************************/
     /***************** GROUPS *******************/
     /********************************************/
 
-    async getGroup(id: number): Promise<Group> {
+    getGroupAsync(id: number): Promise<Group> {
         const url = new URL(`${D4H_BASE_URL}/team/groups/${id}`)
-        return await this._httpUtils.get<Group>(url)
+        return this._httpUtils.getAsync<Group>(url)
     }
 
-    async getGroups(options?: GetGroupsOptions): Promise<Group[]> {
+    getGroupsAsync(options?: GetGroupsOptions): Promise<Group[]> {
         const url = new URL(`${D4H_BASE_URL}/team/groups`)
 
         if (options !== undefined) {
@@ -96,6 +96,6 @@ export default class D4H {
             }
         }
 
-        return await this._httpUtils.getMany(url)
+        return this._httpUtils.getManyAsync(url)
     }
 }

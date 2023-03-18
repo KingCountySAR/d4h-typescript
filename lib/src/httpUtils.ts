@@ -27,7 +27,7 @@ export default class HttpUtils {
         this._token = token
     }
 
-    async request<TBody, TResponse>(url: URL, method: HttpMethod, body?: TBody): Promise<TResponse> {
+    async requestAsync<TBody, TResponse>(url: URL, method: HttpMethod, body?: TBody): Promise<TResponse> {
         const headers = {
             'Authorization': `Bearer ${this._token}`,
             'Content-Type': 'application/json'
@@ -55,11 +55,11 @@ export default class HttpUtils {
         return response.data
     }
 
-    async get<DataType>(url: URL): Promise<DataType> {
-        return this.request<never, DataType>(url, HttpMethod.Get)
+    async getAsync<DataType>(url: URL): Promise<DataType> {
+        return this.requestAsync<never, DataType>(url, HttpMethod.Get)
     }
     
-    async getMany<DataType>(url: URL): Promise<DataType[]> {
+    async getManyAsync<DataType>(url: URL): Promise<DataType[]> {
         let results: DataType[] = []
         
         let offset = 0
@@ -70,7 +70,7 @@ export default class HttpUtils {
             urlWithOffset.searchParams.append('offset', offset.toString())
             urlWithOffset.searchParams.append('limit', this._fetchLimit.toString())
     
-            const newResults = await this.get<DataType[]>(urlWithOffset)
+            const newResults = await this.getAsync<DataType[]>(urlWithOffset)
             results = results.concat(newResults)
             offset += this._fetchLimit
     
@@ -82,7 +82,7 @@ export default class HttpUtils {
         return results
     }
 
-    async put<TBody, TResponse>(url: URL, body: TBody): Promise<TResponse> {
-        return this.request(url, HttpMethod.Put, body)
+    async putAsync<TBody, TResponse>(url: URL, body: TBody): Promise<TResponse> {
+        return this.requestAsync(url, HttpMethod.Put, body)
     }
 }
