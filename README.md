@@ -1,6 +1,12 @@
 # d4h-typescript
 Typescript library for accessing D4H
 
+## Documentation
+
+Typedoc Generated Documentation available at:
+
+<https://kc4x4sar.github.io/d4h-typescript>
+
 ## How to Consume
 This library is not in NPM. As a result, you need to add it to your project locally. To do so, you have three options:
 1. Add the repository to the consuming repository as a Git submodule.
@@ -39,3 +45,13 @@ The available commands are:
 Build simply builds the test project, while launch both builds and runs it. If you've made changes to lib, be sure to build there first.
 
 Before launching, you should setup environment variables. `sample.env` shows you what variables are necessary. Copy the contents to a new file, `.env`, in the same folder and populate it appropriately.
+
+## Contributing
+
+### Updating Docs
+
+To update typedoc docs after changes to code, run in the root of the repo:
+
+```npm install```
+
+```npm run docs```
